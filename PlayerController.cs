@@ -2,23 +2,19 @@
 
 public class PlayerController : MonoBehaviour
 {
-    public float rotationSpeed = 15.0f;
-
     void Update()
     {
-        Vector3 targetPosition = MouseInput();
-        Rotate(targetPosition);
+        Vector3 targetDelta = GetTargetDelta();
+        Rotate(targetDelta);
     }
 
-    Vector3 MouseInput()
+    Vector3 GetTargetDelta()
     {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
     }
 
-    void Rotate(Vector3 targetDirection)
+    void Rotate(Vector2 rotationDelta)
     {
-        float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
-        Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        rigidbody2D.rotation = Mathf.Atan2(rotationDelta.y, rotationDelta.x) * Mathf.Rad2Deg;
     }
 }
